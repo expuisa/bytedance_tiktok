@@ -1,0 +1,5 @@
+- Make an Uvicorn? Server so you can call the scripts and generate Algo
+- Modify the scripts to make it working with the Server.
+
+** Make sure it generates correct Algorithms **
+Everything was working fine in mid 2024, need to recheck.
