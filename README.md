@@ -1,4 +1,5 @@
 # Bytedance TikTok Api
+**Updated version available** https://github.com/efeyalcxin/tiktok-reverse-engineered
 
 ### Explanation
 
