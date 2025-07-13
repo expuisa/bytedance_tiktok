@@ -1,5 +1,6 @@
 # Bytedance TikTok Api
 **Updated version available** https://github.com/efeyalcxin/tiktok-reverse-engineered
+**GET YOUR LATEST TIKTOK SIGNING API (FREE AVAILABLE)** Get Latest TikTok Signing Api : https://rapidapi.com/cybrixian-cybrixian-default/api/cybrix-bytedance1
 
 ### Explanation
 
