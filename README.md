@@ -6,11 +6,16 @@ Pour éviter les bots sur la plateforme TikTok, ont ajouté des algorithms comme
 Ces algorithmes ont été Reversé sur la dernière version android de TikTok.
 Nous pouvons générer et ultiliser ces algorithmes.
 
+(X-Gorgon n'est plus ultilisé dans la plupart des requêtes..)
+Sur la version Web, les requêtes dans l'appli TikTok , Webmssdk est util pour la génération du Signature X-Bogus et X-Gnarly
+
 
 To Avoid Bots on the platform TikTok Added Algorithms Such as X-Argus , X-Gorgon , X-Bogus , X-ladon , X-Tyhon and X-Medusa (More used in Douyin)
 These Algorithms was Reverse Engineered on the latest TikTok Android App
 We can now generate these Algorithms with : 'Device ID' , 'Install ID' , 'Endpoints'
 每个算法都是独一无二的
+
+(X-Gorgon is less used on requests over time..)
 
 ### Aftermath
 Après avoir essayé de Répliquer les mêmes choses dans de différents TikTok (Chinoises) , J'ai vu que les Endpoints des API n'étaient pas la même avec le version Global de TikTok, ça veut dire que TikTok Globale est une version complémentaire de Douyin (TT Chinoise)
