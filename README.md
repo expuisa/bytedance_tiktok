@@ -1,5 +1,5 @@
 # Bytedance TikTok Api
-
+###### Selling TikTok Comment Source Code that can be used for other things , Likes etc.. Offer Price https://t.me/tiktokservicen/15
 ### Explanation
 
 Pour éviter les bots sur la plateforme TikTok, ont ajouté des algorithms comme X-Argus , X-Gorgon , X-Bogus , X-Ladon , X-Typhon et X-Medusa (sont plus ultilisés dans la version chinoise de TikTok)
