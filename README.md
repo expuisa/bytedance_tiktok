@@ -1,4 +1,4 @@
-# Bytedance TikTok Api
+# Bytedance TikTok (Web+Mobile)
 ###### Selling TikTok Comment Source Code that can be used for other things , Likes etc.. Offer Price https://t.me/tiktokservicen/15
 ### Explanation
 
@@ -16,6 +16,10 @@ We can now generate these Algorithms with : 'Device ID' , 'Install ID' , 'Endpoi
 每个算法都是独一无二的
 
 (X-Gorgon is less used on requests over time..)
+
+### Web Only (msToken Gen)
+**MsToken is needed for interaction related requests. Generate them here :** https://github.com/efeyalcxin/TikTok-MsToken -- Not working for all
+
 
 ### Aftermath
 Après avoir essayé de Répliquer les mêmes choses dans de différents TikTok (Chinoises) , J'ai vu que les Endpoints des API n'étaient pas la même avec le version Global de TikTok, ça veut dire que TikTok Globale est une version complémentaire de Douyin (TT Chinoise)
