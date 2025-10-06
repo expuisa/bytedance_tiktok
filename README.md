@@ -1,131 +1,145 @@
-# Bytedance TikTok (Web+Mobile)
-###### Selling TikTok Comment Source Code that can be used for other things , Likes etc.. Offer Price https://t.me/tiktokservicen/15
-### Explanation
+# TikTok/Douyin API: Reverse Engineering Security Algorithms
 
-Pour éviter les bots sur la plateforme TikTok, ont ajouté des algorithms comme X-Argus , X-Gorgon , X-Bogus , X-Ladon , X-Typhon et X-Medusa (sont plus ultilisés dans la version chinoise de TikTok)
-Ces algorithmes ont été Reversé sur la dernière version android de TikTok.
-Nous pouvons générer et ultiliser ces algorithmes.
+A technical overview of TikTok's internal API security, focusing on the various signature algorithms used to authenticate and protect client-server communication. This document is intended for educational and research purposes.
 
-(X-Gorgon n'est plus ultilisé dans la plupart des requêtes..)
-Sur la version Web, les requêtes dans l'appli TikTok , Webmssdk est util pour la génération du Signature X-Bogus et X-Gnarly
+**Disclaimer:** Interacting with private APIs without authorization may violate the terms of service of the platform. Proceed with caution and at your own risk.
 
+---
 
-To Avoid Bots on the platform TikTok Added Algorithms Such as X-Argus , X-Gorgon , X-Bogus , X-ladon , X-Tyhon and X-Medusa (More used in Douyin)
-These Algorithms was Reverse Engineered on the latest TikTok Android App
-We can now generate these Algorithms with : 'Device ID' , 'Install ID' , 'Endpoints'
-每个算法都是独一无二的
+### 1. Introduction to TikTok's API Security
 
-(X-Gorgon is less used on requests over time..)
+To combat automated bots and ensure platform integrity, TikTok and its Chinese counterpart, Douyin, employ a sophisticated suite of security algorithms. These algorithms generate dynamic signatures that are attached as headers to most API requests. A request lacking a valid signature will be rejected by TikTok's servers.
 
-### Web Only (msToken Gen)
-**MsToken is needed for interaction related requests. Generate them here :** https://github.com/efeyalcxin/TikTok-MsToken -- Not working for all
+These signatures are generated client-side (on the mobile app or web browser) and are designed to be difficult to replicate, proving that the request originates from a legitimate client instance. The primary algorithms are known by their HTTP header names:
 
+-   `X-Argus`
+-   `X-Gorgon`
+-   `X-Bogus`
+-   `X-Ladon`
+-   `X-Typhon`
+-   `X-Medusa` (More prevalent in Douyin)
 
-### Aftermath
-Après avoir essayé de Répliquer les mêmes choses dans de différents TikTok (Chinoises) , J'ai vu que les Endpoints des API n'étaient pas la même avec le version Global de TikTok, ça veut dire que TikTok Globale est une version complémentaire de Douyin (TT Chinoise)
-Comparé avec des algorithmes domestiques, La version étrangère de l'algorithme xg de TikTok est actuellement similaire, Mais, le contrôle de risque de TikTok est en avant et est plus strict d'un autre son. La plupart des requêtes peuvent être demandés directement depuis l'algorithme x-g , mais des interfaces coeurs et etc.. Doivent être ultilisés avec l'algorithme du Simulation d'Appareils.
-Il ajoute quatre paramètres importantes, X-Ladon, X-Khronos, X-Gorgon et X-Argus, dans la tête de chaque requête, si le URL change , ces paramêtres/algorithme vont changer.
-- X-Khronos est simplement le temps générale du serveur en Unix
--  X-Gorgon , X-Bogus , X-Argus , X-Medusa , X-Thyron et X-Ladon , dans l'autre main est une signature de sécurité ultilisé dans les requêtes de l'Api TikTok, générés depuis des séries sophistiqués des opérations cryptographiques.
+While the global version of TikTok and Douyin share similar algorithmic foundations, their API endpoints and risk control strictness differ. Global TikTok's risk management is generally considered more aggressive.
 
-Le processus commence par le calcul des hachages MD5 des composants clés de la requête, notamment les paramètres d'URL, le corps de la requête (souvent appelé « stub ») et les cookies. Ces hachages sont combinés dans un tableau initial, avec certaines valeurs constantes et l'heure Unix actuelle.
+---
 
-Ce tableau est ensuite traité par un moteur de transformation personnalisé, généralement appelé classe XG. Chaque élément subit des opérations bit à bit complexes, notamment l'inversion de bits, le XOR avec des valeurs fixes et calculées, et la rotation de bits. Des fonctions comme reverse et RBIT sont utilisées pour masquer davantage les données.
+### 2. Deep Dive into Signature Generation Algorithms
 
-L'algorithme transforme le tableau de manière itérative, en appliquant des couches de logique au niveau du bit afin de garantir que chaque signature est unique et difficile à reproduire. Le résultat final est une chaîne hexadécimale, préfixée par « 8402 », qui constitue l'en-tête X-Gorgon.
+Based on reverse-engineering of the client-side code, we can detail the precise steps involved in generating the `X-Bogus` and `X-Argus` signatures.
 
-Cette signature sert de preuve cryptographique de l'authenticité de la requête et de son intégrité, permettant à TikTok de valider les requêtes et de protéger son API contre les accès non autorisés ou les falsifications.
--
+#### **2.1. The X-Bogus Signature Algorithm**
 
+The `X-Bogus` algorithm is a multi-stage process designed to create a unique signature from request data, user agent, and a timestamp. It relies heavily on hashing, custom ciphers, and data manipulation to achieve obfuscation. The generation process can be broken down into the following stages:
 
-After trying to replicate the same things on the chinese TikTok (抖音) , I have seen that the API Endpoints aren't the same with the global version of TikTok , This means that TikTok Global is an complementary version of Douyin (抖音)
-该算法需要安装ID ? 此代码使用我们的第三方 API 生成。我们的解决方案是唯一能够解决验证码、按需请求服务并修改机器人账户信息的解决方案。
-Compared with domestic algorithms, the overseas version of tiktok's xg algorithm is actually similar. However, tiktok's risk control measures are earlier and stricter than a certain sound. Most requests can be requested directly through the xg algorithm, but core interfaces etc., must be used in conjunction with the device registration algorithm
-It adds four important parameters, X-Ladon, X-Khronos, X-Gorgon, and X-Argus, to the header of each request. When the URL changes, these parameters will also change.
-- X-Khronos is simply the current Unix server timestamp.
-- X-Gorgon , X-Bogus , X-Argus , X-Medusa , X-Thyron and X-Ladon , on the other hand, is a security signature used in TikTok API requests, generated through a sophisticated series of cryptographic operations.
+**Step 1: Initial Hashing of Core Components**
 
-The process begins by computing MD5 hashes of key components of the request—this includes the URL parameters, request body (often referred to as the "stub"), and any cookies. These hashes are combined into an initial array along with certain constant values and the current Unix time.
+The algorithm first computes three separate MD5 hashes to create a condensed and irreversible representation of the request's key elements.
 
-This array is then processed by a custom transformation engine, typically referred to as the XG class. Each element undergoes complex bitwise operations, including bit reversal, XOR with both fixed and calculated values, and bit rotations. Functions like reverse and RBIT are used to further obscure the data.
+1.  **Data Hashing**: The request body is double-MD5 hashed, likely an extra obfuscation step to prevent simple hash lookups.
 
-The algorithm iteratively transforms the array, applying layers of bit-level logic to ensure that each signature is unique and difficult to replicate. The final output is a hexadecimal string, prefixed with '8402', which forms the X-Gorgon header.
+2.  **URL Parameters Hashing**: The URL query parameters are also double-MD5 hashed.
 
-This signature serves as a cryptographic proof that the request is authentic and has not been altered, helping TikTok validate requests and protect its API from unauthorized access or tampering.
--
+3.  **User-Agent Hashing**: The user agent string undergoes a more complex, three-step process:
+    a. It's first encrypted using a simple **RC4 stream cipher** with a hardcoded key.
+    b. The resulting ciphertext is then encoded using a custom **Base64 implementation**.
+    c. Finally, the Base64 string is MD5 hashed.
 
-### Endpoints
-- Captcha : rc-verification16-normal-no1A.tiktokv.eu , api16-normal-no1a.tiktokv.eu
-- Proxyless Endpoints : useast5 , maliva , useast1a , useast8
-### Scheme
+**Step 2: Assembling the "Salt Array"**
 
-- Find Endpoint -> Generate Algo -> Do request and Send Key -> OK
-- Find Endpoint -> Do request -> NO Authorization or Parameter Error
+A core data array is created, serving as the input for the main obfuscation engine. It's a carefully constructed list of integers containing:
+- The current Unix `timestamp`.
+- A hardcoded "magic" number (`536919696`).
+- A series of constants.
+- The **last two bytes** from each of the three MD5 hashes generated in Step 1. This is a key detail—it uses only a fraction of the hashes.
+- The `timestamp` and the `magic` number, broken down into their individual bytes.
+- A final checksum byte, calculated by XORing all previous bytes together.
 
-- Trouver l'endpoint -> Générer l'Algo -> Faire une requête et envoyer les clés -> OK
-- Trouver l'endpoint -> Faire une requête -> PAS D'autorisation ou Erreur de paramètres.
+**Step 3: Data Filtering and Scrambling**
 
-### Finding Endpoints
+The data array is not used as-is. It's first manipulated to change its order and structure:
+1.  **Filtering**: A custom filtering function selects 19 specific bytes from the array in a predefined, non-sequential order.
+2.  **Scrambling**: These 19 bytes are then interleaved into a new character string, effectively shuffling the data in a deterministic way.
 
-Launch MEMU Emulator + HTTP Toolkit
+**Step 4: Final Encryption and Encoding**
 
-Create a new virtual Android device.
-In the settings, enable "Root Device"
-Start Emulator then install the TikTok Apk to it
+The scrambled string from the previous step undergoes a final round of encryption and encoding to produce the signature:
+1.  **RC4 Encryption**: The string is encrypted again using RC4, this time with a very simple key.
+2.  **Prefixing**: The resulting ciphertext is prefixed with two specific control bytes.
+3.  **Custom Base64 Encoding**: The final binary string is encoded using a **custom Base64 alphabet**. This is a critical obfuscation technique; a standard Base64 decoder will fail on this signature. The custom alphabet makes it impossible to read the underlying data without knowing the exact character mapping.
 
-In HTTP Toolkit, and in Intercept tab , select "Android Device via ADB".
+The output of this final step is the `X-Bogus` signature string.
 
-Open Tiktok & The View tab in HTTP Toolkit to view all requests.
+---
 
-### Douyin Device Registration
+#### **2.2. The X-Argus Signature Algorithm**
 
-After testing, it was found that TikTok's device registration is not a single request can be completed, although the simulated request obtains device_id and install_id, but if you use the newly obtained device information to access the encrypted interface, you will get an empty response. Check the information and learn that there is a follow-up activation request. (Cause: No algorithms) I've found that a single mock request was not enough to fully mimic the behavior of a real device. The real breakthrough lies in a series of subsequent "activation" requests, which makes the generated device information closer to the real device environment, thus avoiding the risk of being identified by the platform because the information is too single or false
+The `X-Argus` algorithm is significantly more complex than `X-Bogus`. It involves modern cryptographic primitives, a custom block cipher, and a binary data format (Protocol Buffers) to structure its data.
 
-### (Argus) Sign Keys - 签名密钥
-- sign_key : \xac\x1a\xda\xae\x95\xa7\xaf\x94\xa5\x11J\xb3\xb3\xa9}\xd8\x00P\xaa\n91L@R\x8c\xae\xc9RV\xc2\x8c
-- sm3 : \xfcx\xe0\xa9ez\x0ct\x8c\xe5\x15Y\x90<\xcf\x03Q\x0eQ\xd3\xcf\xf22\xd7\x13C\xe8\x8a2\x1cS\x04
-/!\ We get an Argus that is very short and can be Invalid
-/!\ Nous avons un algorithme X-Argus qui est vraiment petit ce qui montre qu'il est invalide.
+**Step 1: Data Structuring with Protocol Buffers (Protobuf)**
 
-Cependant ceci est à revoir dans le fichier que j'ai partagé.
+Instead of a simple list, `X-Argus` organizes its input data into a highly structured object containing over 20 fields, including:
+- Device identifiers (`device_id`, `sec_device_id`).
+- Application details (`aid`, `version_name`, `sdk_version`).
+- The current `timestamp`.
+- Cryptographic hashes of the request's query and body.
 
-### Important
-**Les scripts que j'ai partagé sont espéciallement fait pour Douyin (Version chinoise de TikTok) mais IL va marcher avec la version Global/Américaine de TikTok.**
-Les scripts doivent marcher mais vous devez le modifier à vos besoins.
+This object is then serialized into a compact binary format using a **Protobuf** encoder. Protobuf is a format designed for efficient data exchange between services.
 
+**Step 2: Hashing the Request Query and Body**
 
-The scripts i've released was especially made for Douyin but IT will work with Global/US TikTok. (Nearly Same Algorithms -> X-A X-G X-L X-M X-T X-B)
-Most of the scripts should work but you will need to modify to your likings.
-我手头的大部分剧本都是一年前或更久以前的。
+Before being added to the Protobuf structure, the query and body are hashed using the **SM3 cryptographic hash function**. SM3 is a Chinese national standard, similar in purpose to SHA-256, and is significantly stronger than the MD5 algorithm used in `X-Bogus`.
 
-### Tree Possible Actions / Actions possibles
+**Step 3: Core Encryption with the Simon Cipher**
 
-- UserInteractions
-  - FollowUser (Needs unflagged HQ Account)
-  - LikePost
-  - CommentPost
-  - WatchVideo (Only on some endpoints)
-  - LikePostComment
-  - SaveVideo
-  - ShareVideo
-  - PrivateMessageUser
-  - GetUserFeed (Unflaggs Account after using it after actions)
-- TikTokShopInteractions
-  - Get Product Price
-  - Report Item
-  - Get Product Info
-  - Get Product Images
-- DeviceInteractions
-  - SendView/WatchVideo (Doesn't count in monetization) (Account needs depends on endpoint)
-  - FullyWatchVideo (Unavailable and Takes time)
-  - Report User
-  - RegisterDevice
-- UserInteractions (Only Douyin)
-  - SendUserFavorite
-- Logins
-  - GetCodeViaMobile (Douyin only)
-  - GetCodeViaMobile (Douyin only)
-  - RegisterAccont (Working but really flagged)
-  - LoginAccount (SessionID only)
+This is the cryptographic heart of `X-Argus`.
+1.  **Padding**: The serialized Protobuf data is padded to be a multiple of the cipher's block size (16 bytes).
+2.  **Key Preparation**: The encryption key is derived from a hardcoded constant found in the application's binary. This key is prepared for use with the Simon cipher.
+3.  **Simon Encryption**: The data is encrypted block-by-block using the **Simon block cipher**. Simon is a lightweight cipher designed for high performance, making it suitable for mobile devices. This is a far more robust encryption method than the simple RC4 stream cipher.
 
+**Step 4: Post-Encryption Obfuscation**
 
+The encrypted data from the Simon cipher is further obscured:
+1.  **Header Prepending**: A fixed 8-byte header is prepended to the ciphertext.
+2.  **Byte Reversal and XORing**: A custom function reverses the byte order of the entire buffer and XORs each byte with a byte from the header, effectively scrambling the ciphertext.
+3.  **Final AES Encryption**: The resulting buffer is padded again and then encrypted one last time using the standard **AES cipher** in CBC mode. The AES key and initialization vector (IV) are themselves derived by MD5-hashing parts of another hardcoded key.
+
+**Step 5: Final Formatting**
+
+1.  **Prefixing**: The AES-encrypted data is prefixed with two specific control bytes.
+2.  **Base64 Encoding**: The final binary blob is encoded into a standard Base64 string.
+
+This string is the final `X-Argus` signature.
+
+---
+
+### 3. Endpoint Limitations and Operational Challenges
+
+Interacting with the TikTok API, even with valid signatures, is not straightforward. The platform employs a multi-layered defense system that poses significant challenges.
+
+-   **Rate Limiting and IP Reputation**: Aggressive rate limits are in place for all endpoints. An IP address making too many requests in a short period will be temporarily or permanently blocked. The reputation of the IP address (e.g., residential vs. datacenter) also plays a crucial role in the level of scrutiny it receives.
+
+-   **Geographic Restrictions (Geo-fencing)**: Many API endpoints return different content or fail entirely based on the geographical location of the client's IP address. This is fundamental to how TikTok customizes the user experience and enforces regional content policies.
+
+-   **Device and Account Trust Score**: TikTok maintains an internal "trust score" for both devices and user accounts.
+    -   **Device Trust**: A newly registered `device_id` is considered untrusted. It must be "warmed up" through a series of activation requests that mimic real user behavior over time. Without a trusted device, many core API calls will return empty data or errors.
+    -   **Account Trust**: Accounts that exhibit bot-like behavior (e.g., rapid following, liking, or commenting) are flagged. A flagged account may lose access to certain features or have its API requests systematically denied.
+
+-   **CAPTCHA Challenges**: If the risk control engine detects suspicious activity, it will serve a CAPTCHA challenge. Automated clients must be able to detect these challenges and integrate with a solving service, adding another layer of complexity and cost.
+
+-   **Signature Algorithm Versioning**: The signing algorithms are not static. TikTok frequently pushes updates to the client applications that modify the constants, logic, or entire structure of these algorithms. An implementation that works today may become obsolete overnight, requiring continuous reverse-engineering efforts.
+
+---
+
+### 4. Analysis of Historical API Vulnerabilities
+
+Like any large-scale platform, TikTok's API has had its share of security vulnerabilities in the past. Analyzing these provides insight into potential weak points in complex systems.
+
+-   **Account Takeover via SMS Link Spoofing (2020)**: Researchers discovered a flaw in the `/v1/mobile/verify/` endpoint. By manipulating the request, an attacker could send a fraudulent SMS to a user that appeared to be from TikTok. If the user clicked the link, it allowed the attacker to associate their own phone number with the victim's account, leading to a full account takeover. This highlighted weaknesses in the logic of account recovery and linking mechanisms.
+
+-   **Unauthenticated Information Disclosure (2020)**: Several API endpoints were found to be improperly secured, allowing unauthenticated access to user data such as secondary email addresses, birth dates, and other profile information. This was a classic case of missing authorization checks on sensitive data endpoints.
+
+-   **Deep Link Hijacking and Content Spoofing (2021)**: A vulnerability was identified in how the application handled deep links (`tiktok://`). An attacker could craft a malicious link that, when opened, could force the app to make arbitrary API calls on behalf of the user. This could be used to make a user's private videos public or to display spoofed content within the official app.
+
+-   **Content Processing Vulnerabilities (CVE-2022-28799)**: While not a direct API logic flaw, the way the API handled content uploads presented a significant risk. A vulnerability was found in the third-party media processing library used by TikTok on Android. By uploading a specially crafted video file, an attacker could trigger a memory corruption issue, potentially leading to remote code execution on the user's device. This demonstrates that the attack surface extends beyond the API logic itself to how the platform processes user-submitted data.
+
+These historical examples underscore the immense challenge of securing a platform with such a vast and dynamic API. They show that vulnerabilities can arise not just from cryptographic weaknesses, but also from flawed business logic, improper authorization checks, and insecure handling of user-generated content.
