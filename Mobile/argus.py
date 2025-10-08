@@ -9,6 +9,7 @@ from Crypto.Util.Padding import pad
 from signer.lib.Sm3 import SM3
 from signer.lib.Simon import simon_enc
 from signer.lib.protobuf import ProtoBuf
+
 # 28 Bean Argus for free baby!!!
 class Argus:
     SIGN_KEY = b'\xac\x1a\xda\xae\x95\xa7\xaf\x94\xa5\x11J\xb3\xb3\xa9}\xd8\x00P\xaa\n91L@R\x8c\xae\xc9RV\xc2\x8c'
@@ -148,8 +149,7 @@ class Argus:
                 3: 'googleplay',
                 4: app_version_constant
             },
-            25: 2,
-            28: 1008
+            25: 2
         }
 
         return Argus.encrypt(xargus_bean)
