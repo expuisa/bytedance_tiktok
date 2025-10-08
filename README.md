@@ -143,3 +143,14 @@ Like any large-scale platform, TikTok's API has had its share of security vulner
 -   **Content Processing Vulnerabilities (CVE-2022-28799)**: While not a direct API logic flaw, the way the API handled content uploads presented a significant risk. A vulnerability was found in the third-party media processing library used by TikTok on Android. By uploading a specially crafted video file, an attacker could trigger a memory corruption issue, potentially leading to remote code execution on the user's device. This demonstrates that the attack surface extends beyond the API logic itself to how the platform processes user-submitted data.
 
 These historical examples underscore the immense challenge of securing a platform with such a vast and dynamic API. They show that vulnerabilities can arise not just from cryptographic weaknesses, but also from flawed business logic, improper authorization checks, and insecure handling of user-generated content.
+
+---
+### Limitations
+
+Don't think that with these signatures you can takeover TikTok 😂
+
+You will need :
+
+    - **Unflagged and (Real) Accounts/Cookies, you can buy them from me :) for 0.10$/unit if you buy in mass.**
+
+    - **MsTokenEnc and MsTokenDec to generate msToken's, Instead of wasting proxy data on generating while getting page source, you can get it from me (pay).**
