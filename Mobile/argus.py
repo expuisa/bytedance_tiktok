@@ -10,7 +10,7 @@ from signer.lib.Sm3 import SM3
 from signer.lib.Simon import simon_enc
 from signer.lib.protobuf import ProtoBuf
 
-# 28 Bean Argus for free baby!!!
+# @srcxd @expuisa @comedien_de_merde
 class Argus:
     SIGN_KEY = b'\xac\x1a\xda\xae\x95\xa7\xaf\x94\xa5\x11J\xb3\xb3\xa9}\xd8\x00P\xaa\n91L@R\x8c\xae\xc9RV\xc2\x8c'
     SM3_OUTPUT = b'\xfcx\xe0\xa9ez\x0ct\x8c\xe5\x15Y\x90<\xcf\x03Q\x0eQ\xd3\xcf\xf22\xd7\x13C\xe8\x8a2\x1cS\x04'
