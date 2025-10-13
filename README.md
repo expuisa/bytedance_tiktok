@@ -1,4 +1,4 @@
-# TikTok/Douyin API: Reverse Engineering Security Algorithms
+# TikTok/Douyin API: Reverse Engineering Security Algorithms, Full Generation from Scripts
 #### Check out my paid stuff https://github.com/src244/tiktok-app/
 
 A technical overview of TikTok's internal API security, focusing on the various signature algorithms used to authenticate and protect client-server communication. This document is intended for educational and research purposes.
